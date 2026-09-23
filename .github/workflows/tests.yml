@@ -1,0 +1,41 @@
+name: Laravel checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: testing
+          POSTGRES_DB: shop_testing
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite, pdo_pgsql
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: composer install --prefer-dist --no-interaction
+      - run: composer audit
+      - run: npm ci && npm run build
+      - run: cp .env.example .env && php artisan key:generate
+      - run: php artisan test --compact
+      - name: PostgreSQL migrations and catalog import
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: shop_testing
+          DB_USERNAME: postgres
+          DB_PASSWORD: testing
+        run: php artisan migrate --seed --force
+      - run: php artisan route:cache && php artisan view:cache

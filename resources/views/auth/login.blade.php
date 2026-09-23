@@ -1,0 +1,9 @@
+<x-guest-layout>
+<div class="mb-7"><p class="text-sm font-semibold text-blue-600">Acceso al sistema</p><h2 class="mt-1 text-2xl font-bold text-[#0b1f3a]">Iniciar sesión</h2><p class="mt-2 text-sm leading-6 text-slate-500">Ingrese sus credenciales autorizadas de 101 Shop.</p></div>
+@if(session('status'))<div class="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{{ session('status') }}</div>@endif
+<form method="POST" action="{{ route('login') }}" class="space-y-5" novalidate>@csrf
+<div><label for="login" class="label-form">Usuario o correo electrónico</label><input id="login" name="login" type="text" value="{{ old('login') }}" maxlength="150" autocomplete="username" autofocus required class="input-form @error('login') input-error @enderror" placeholder="Ej. admin101">@error('login')<p class="error-text">{{ $message }}</p>@enderror</div>
+<div><div class="mb-1.5 flex items-center justify-between"><label for="password" class="text-sm font-semibold text-slate-700">Contraseña</label>@if(Route::has('password.request'))<a href="{{ route('password.request') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-700">¿Olvidó su contraseña?</a>@endif</div><input id="password" name="password" type="password" autocomplete="current-password" required class="input-form @error('password') input-error @enderror" placeholder="Ingrese su contraseña">@error('password')<p class="error-text">{{ $message }}</p>@enderror</div>
+<label class="flex items-center gap-2 text-sm text-slate-600"><input type="checkbox" name="remember" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">Mantener sesión iniciada</label>
+<button type="submit" class="btn-primary-101 w-full py-3">Ingresar</button></form><p class="mt-6 text-center text-xs leading-5 text-slate-400">Acceso exclusivo para personal autorizado.</p>
+</x-guest-layout>

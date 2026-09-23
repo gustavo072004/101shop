@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: 101-shop-sprint
+    runtime: docker
+    plan: free
+    healthCheckPath: /publico/catalogo
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SSLMODE
+        value: require
+      - key: WHATSAPP_PHONE
+        value: "50370627910"
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      - key: SESSION_DRIVER
+        value: file
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: warning
+      - key: MAIL_MAILER
+        value: smtp
+      - key: MAIL_HOST
+        sync: false
+      - key: MAIL_PORT
+        value: "2525"
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_ENCRYPTION
+        value: tls
+      - key: MAIL_FROM_ADDRESS
+        sync: false
