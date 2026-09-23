@@ -13,7 +13,11 @@
     @if($privado)<a href="{{ route('dashboard') }}">Panel privado</a><form method="POST" action="{{ route('logout') }}">@csrf<button>Cerrar sesión</button></form>@endif
     </nav>
 </div></header>
-<main class="container">@yield('content')</main>
+<main class="container">
+@if(session('success'))<p class="sale-success" role="status">{{ session('success') }}</p>@endif
+@if(session('error'))<p class="sale-error" role="alert">{{ session('error') }}</p>@endif
+@yield('content')</main>
 <footer class="footer">101 Shop · {{ $privado ? 'Información interna · Acceso autorizado' : 'Consulta disponibilidad y condiciones por WhatsApp' }}</footer>
 </body>
 </html>
+

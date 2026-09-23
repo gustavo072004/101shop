@@ -9,6 +9,17 @@ use Illuminate\View\View;
 
 class CatalogoController extends Controller
 {
+    public function vender(Producto $producto): \Illuminate\Http\RedirectResponse
+    {
+        $vendido = Producto::whereKey($producto->getKey())
+            ->where('estado', true)->where('stock', '>', 0)
+            ->whereHas('categoria', fn ($q) => $q->where('estado', true))
+            ->decrement('stock');
+
+        return back()->with($vendido ? 'success' : 'error',
+            $vendido ? 'Venta exitosa' : 'No se puede vender: producto sin stock o inactivo.');
+    }
+
     public function index(Request $request): View
     {
         $filters = $request->validate(['q' => 'nullable|string|max:150', 'categoria' => 'nullable|integer|min:1']);
@@ -52,3 +63,4 @@ class CatalogoController extends Controller
         ]);
     }
 }
+

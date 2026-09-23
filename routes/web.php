@@ -19,6 +19,7 @@ Route::get('/publico/catalogo/{producto}', [CatalogoController::class, 'show'])-
 Route::get('/imagenes/productos/{producto}', [CatalogoController::class, 'imagen'])->name('productos.imagen');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/catalogo/{producto}/vender', [CatalogoController::class, 'vender'])->name('catalogo.vender');
     Route::get('/catalogo', [CatalogoController::class, 'index'])->name('catalogo.index');
     Route::get('/catalogo/{producto}', [CatalogoController::class, 'show'])->name('catalogo.show');
 
@@ -128,3 +129,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
